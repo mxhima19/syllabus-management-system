@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Syllabus Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background-color: #f3f4f6;
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('assets/WhatsApp Image 2025-05-22 at 01.34.32_925b9a83.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 1;
+            z-index: -1;
+        }
+        .content-wrapper {
+            background-color: rgba(255, 255, 255, 0.9);
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+        }
+        .college-banner {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('assets/WhatsApp Image 2025-05-22 at 01.34.32_925b9a83.jpg');
+            background-size: cover;
+            background-position: center;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+    <div class="content-wrapper">
+        <!-- Navigation -->
+        <nav class="text-white p-4 fixed top-0 left-0 right-0 z-50" style="background-color: #900f0f;">
+            <div class="container mx-auto flex justify-between items-center">
+                <h1 class="text-2xl font-bold">Syllabus Management System</h1>
+                <div class="space-x-4">
+                    <a href="#" class="hover:text-red-200">About</a>
+                    <a href="#" class="hover:text-red-200">Contact</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Add padding to account for fixed navigation -->
+        <div class="pt-16">
+            <!-- College Banner -->
+            <div class="college-banner">
+                <div class="container mx-auto text-center">
+                    <div class="flex items-center justify-center gap-6 mb-4">
+                        <img src="assets/BMS_Institute_of_Technology_and_Management_logo-removebg-preview.png" alt="BMSIT Logo" class="h-32 w-auto">
+                        <h1 class="text-5xl font-bold text-white"><span style="color: #900f0f;">BMS</span> Institute of Technology and Management</h1>
+                    </div>
+                    <p class="text-2xl text-white mb-2">Yelahanka, Bangalore</p>
+                    <p class="text-xl text-white">Affiliated to Visvesvaraya Technological University</p>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="container mx-auto px-4 py-8">
+                <!-- Login Selection -->
+                <div id="loginSelection" class="max-w-4xl mx-auto bg-white bg-opacity-95 rounded-lg shadow-lg p-8">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Welcome to Syllabus Management System</h2>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <button onclick="showLoginForm('student')" class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition duration-200">
+                            <div class="text-center">
+                                <h3 class="text-2xl font-bold text-gray-800 mb-4">Student Login</h3>
+                                <p class="text-gray-600 mb-4">Access your course syllabus and materials</p>
+                                <span class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg">Login as Student</span>
+                            </div>
+                        </button>
+                        <button onclick="showLoginForm('staff')" class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition duration-200">
+                            <div class="text-center">
+                                <h3 class="text-2xl font-bold text-gray-800 mb-4">Staff Login</h3>
+                                <p class="text-gray-600 mb-4">Manage and update course syllabi</p>
+                                <span class="inline-block bg-green-600 text-white px-6 py-3 rounded-lg">Login as Staff</span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Student Login Form -->
+                <div id="studentLoginForm" class="max-w-md mx-auto bg-white bg-opacity-95 rounded-lg shadow-lg p-8 hidden">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-800">Student Login</h2>
+                        <button onclick="showLoginSelection()" class="text-gray-600 hover:text-gray-800">
+                            ← Back
+                        </button>
+                    </div>
+                    <form onsubmit="return validateStudentLogin(event)">
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-2" for="studentEmail">Email</label>
+                            <input type="email" id="studentEmail" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-green-500" required>
+                        </div>
+                        <div class="mb-6">
+                            <label class="block text-gray-700 mb-2" for="studentPassword">Password</label>
+                            <input type="password" id="studentPassword" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-green-500" required>
+                        </div>
+                        <button type="submit" class="w-full bg-[#900f0f] text-white py-2 rounded-lg hover:bg-[#7a0d0d] transition duration-200">
+                            Login as Student
+                        </button>
+                        <p class="text-sm text-gray-600 mt-4 text-center">Demo: student@example.com / student123</p>
+                    </form>
+                </div>
+
+                <!-- Staff Login Form -->
+                <div id="staffLoginForm" class="max-w-md mx-auto bg-white bg-opacity-95 rounded-lg shadow-lg p-8 hidden">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-800">Staff Login</h2>
+                        <button onclick="showLoginSelection()" class="text-gray-600 hover:text-gray-800">
+                            ← Back
+                        </button>
+                    </div>
+                    <form onsubmit="return validateStaffLogin(event)">
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-2" for="staffEmail">Email</label>
+                            <input type="email" id="staffEmail" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-green-500" required>
+                        </div>
+                        <div class="mb-6">
+                            <label class="block text-gray-700 mb-2" for="staffPassword">Password</label>
+                            <input type="password" id="staffPassword" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-green-500" required>
+                        </div>
+                        <button type="submit" class="w-full bg-[#900f0f] text-white py-2 rounded-lg hover:bg-[#7a0d0d] transition duration-200">
+                            Login as Staff
+                        </button>
+                        <p class="text-sm text-gray-600 mt-4 text-center">Demo: staff@example.com / staff123</p>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="bg-gray-800 text-white py-8 mt-8">
+            <div class="container mx-auto px-4">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Reach Us -->
+                    <div>
+                        <h3 class="text-xl font-bold mb-4">REACH US</h3>
+                        <p class="mb-2">BMS Institute of Technology & Management,</p>
+                        <p class="mb-2">Doddaballapur Main Road,</p>
+                        <p class="mb-2">Avalahalli, Yelahanka,</p>
+                        <p class="mb-4">Bengaluru - 560119.</p>
+                    </div>
+                    
+                    <!-- Contact Us -->
+                    <div>
+                        <h3 class="text-xl font-bold mb-4">CONTACT US</h3>
+                        <p class="font-semibold mb-2">Admissions:</p>
+                        <p class="mb-1">BMS Trust Office: 080-26611636</p>
+                        <p class="mb-1">Admissions Enquiry: 080-68730429 / 080-68730456</p>
+                        <p class="mb-1">BMSIT Office: 080-68730444</p>
+                        <p class="mb-1">Fee: 080-68730428</p>
+                        <p class="mb-1">Hostel: 9739947120 / 9741590336 / 8792347320</p>
+                        <p class="mb-1">Email: principal@bmsit.in</p>
+                        <p class="mb-1">Women Helpline Number 24x7: 080-68730452</p>
+                    </div>
+                </div>
+                <div class="text-center mt-8 pt-4 border-t border-gray-700">
+                    <p>&copy; 2024 Syllabus Management System. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- About Modal -->
+    <div id="aboutModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-8 max-w-2xl w-full mx-4 transform transition-all">
+            <div class="text-center">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">About BMSIT&M</h2>
+                <p class="text-gray-600 mb-6 text-left leading-relaxed">
+                    BMS Institutions takes pride in educating students since 1946 in various fields of Engineering and continues to provide world class education in the coming years with more emphasis on research and development. The history of BMS Educational Trust rewinds back to the year 1946 with the establishment of the first private engineering college in the country. BMSIT&M Alumni can be found all over the world.
+                </p>
+                <button onclick="closeAboutModal()" class="bg-[#900f0f] text-white px-6 py-2 rounded-lg hover:bg-[#7a0d0d] transition duration-200">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showLoginForm(type) {
+            document.getElementById('loginSelection').classList.add('hidden');
+            if (type === 'student') {
+                document.getElementById('studentLoginForm').classList.remove('hidden');
+            } else {
+                document.getElementById('staffLoginForm').classList.remove('hidden');
+            }
+        }
+
+        function showLoginSelection() {
+            document.getElementById('loginSelection').classList.remove('hidden');
+            document.getElementById('studentLoginForm').classList.add('hidden');
+            document.getElementById('staffLoginForm').classList.add('hidden');
+        }
+
+        async function validateStudentLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('studentEmail').value;
+            const password = document.getElementById('studentPassword').value;
+
+            try {
+                const response = await fetch('/syllabus_management/backend/api/auth.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        password: password,
+                        role: 'student'
+                    })
+                });
+
+                const result = await response.json();
+                
+                if (response.ok) {
+                    // Store user data in sessionStorage
+                    sessionStorage.setItem('user', JSON.stringify(result.user));
+                    sessionStorage.setItem('role', 'student');
+                    window.location.href = 'student-dashboard.html';
+                } else {
+                    alert(result.message || 'Invalid student credentials!');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                alert('Error during login. Please try again.');
+            }
+            return false;
+        }
+
+        async function validateStaffLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('staffEmail').value;
+            const password = document.getElementById('staffPassword').value;
+
+            try {
+                const response = await fetch('/syllabus_management/backend/api/auth.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        password: password,
+                        role: 'staff'
+                    })
+                });
+
+                const result = await response.json();
+                
+                if (response.ok) {
+                    // Store user data in sessionStorage
+                    sessionStorage.setItem('user', JSON.stringify(result.user));
+                    sessionStorage.setItem('role', 'staff');
+                    window.location.href = 'staff-dashboard.html';
+                } else {
+                    alert(result.message || 'Invalid staff credentials!');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                alert('Error during login. Please try again.');
+            }
+            return false;
+        }
+
+        function showAboutModal() {
+            document.getElementById('aboutModal').classList.remove('hidden');
+            document.getElementById('aboutModal').classList.add('flex');
+        }
+
+        function closeAboutModal() {
+            document.getElementById('aboutModal').classList.add('hidden');
+            document.getElementById('aboutModal').classList.remove('flex');
+        }
+
+        // Update the About link to use the modal
+        document.querySelector('a[href="#"]').addEventListener('click', function(e) {
+            e.preventDefault();
+            showAboutModal();
+        });
+    </script>
+</body>
+</html> 

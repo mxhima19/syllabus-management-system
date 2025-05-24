@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Create New Syllabus</h2>
+    </div>
+    <div class="card-body">
+        <form method="POST">
+            <div class="mb-3">
+                <label for="course_id" class="form-label">Course</label>
+                <select class="form-select" id="course_id" name="course_id" required>
+                    <option value="">Select a course</option>
+                    {% for course in courses %}
+                    <option value="{{ course.id }}">{{ course.course_code }} - {{ course.course_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="mb-3">
+                <label for="academic_year" class="form-label">Academic Year</label>
+                <input type="text" class="form-control" id="academic_year" name="academic_year" 
+                       placeholder="e.g., 2023-2024" required>
+            </div>
+            
+            <div class="mb-3">
+                <label for="semester" class="form-label">Semester</label>
+                <select class="form-select" id="semester" name="semester" required>
+                    <option value="">Select semester</option>
+                    <option value="Fall">Fall</option>
+                    <option value="Spring">Spring</option>
+                    <option value="Summer">Summer</option>
+                </select>
+            </div>
+            
+            <div class="mb-3">
+                <label for="objectives" class="form-label">Course Objectives</label>
+                <textarea class="form-control" id="objectives" name="objectives" rows="3" required></textarea>
+            </div>
+            
+            <div class="mb-3">
+                <label for="prerequisites" class="form-label">Prerequisites</label>
+                <textarea class="form-control" id="prerequisites" name="prerequisites" rows="2"></textarea>
+            </div>
+            
+            <div class="mb-3">
+                <label for="textbooks" class="form-label">Textbooks</label>
+                <textarea class="form-control" id="textbooks" name="textbooks" rows="3" required></textarea>
+            </div>
+            
+            <div class="mb-3">
+                <label for="topics" class="form-label">Course Topics</label>
+                <textarea class="form-control" id="topics" name="topics" rows="5" required></textarea>
+            </div>
+            
+            <div class="mb-3">
+                <label for="grading_policy" class="form-label">Grading Policy</label>
+                <textarea class="form-control" id="grading_policy" name="grading_policy" rows="3" required></textarea>
+            </div>
+            
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary">Create Syllabus</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %} 

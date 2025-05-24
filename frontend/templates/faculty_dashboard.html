@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Dashboard - Syllabus Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: url('{{ url_for("static", filename="images/WhatsApp Image 2025-05-22 at 01.34.32_925b9a83.jpg") }}') no-repeat center center fixed;
+            background-size: cover;
+            background-color: #f3f4f6; /* Fallback color */
+        }
+        .content-wrapper {
+            background-color: rgba(255, 255, 255, 0.9);
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+        }
+        .college-banner {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('{{ url_for("static", filename="images/WhatsApp Image 2025-05-22 at 01.34.32_925b9a83.jpg") }}') no-repeat center center;
+            background-size: cover;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+    <div class="content-wrapper">
+        <!-- Navigation -->
+        <nav class="text-white p-4 fixed top-0 left-0 right-0 z-50" style="background-color: #900f0f;">
+            <div class="container mx-auto flex justify-between items-center">
+                <h1 class="text-2xl font-bold">Syllabus Management System</h1>
+                <div class="space-x-4">
+                    <a href="#" class="hover:text-red-200">Profile</a>
+                    <a href="{{ url_for('logout') }}" class="hover:text-red-200">Logout</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Add padding to account for fixed navigation -->
+        <div class="pt-16">
+            <!-- College Banner -->
+            <div class="college-banner">
+                <div class="container mx-auto text-center">
+                    <div class="flex items-center justify-center gap-6 mb-4">
+                        <img src="{{ url_for('static', filename='images/BMS_Institute_of_Technology_and_Management_logo-removebg-preview.png') }}" alt="BMSIT Logo" class="h-32 w-auto">
+                        <h1 class="text-5xl font-bold text-white"><span style="color: #900f0f;">BMS</span> Institute of Technology and Management</h1>
+                    </div>
+                    <p class="text-2xl text-white mb-2">Yelahanka, Bangalore</p>
+                    <p class="text-xl text-white">Affiliated to Visvesvaraya Technological University</p>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="container mx-auto px-4 py-8">
+                <!-- Initial Options -->
+                <div id="initialOptions" class="max-w-4xl mx-auto bg-white bg-opacity-95 rounded-lg shadow-lg p-6">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">What would you like to do?</h2>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <button onclick="showSyllabusForm('add')" class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition duration-200">
+                            <div class="text-center">
+                                <h3 class="text-xl font-bold text-gray-800 mb-4">Add New Syllabus</h3>
+                                <p class="text-gray-600 mb-4">Create a new course syllabus</p>
+                                <span class="inline-block bg-green-600 text-white px-4 py-2 rounded-lg">Add Syllabus</span>
+                            </div>
+                        </button>
+                        <button onclick="showSyllabusForm('edit')" class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition duration-200">
+                            <div class="text-center">
+                                <h3 class="text-xl font-bold text-gray-800 mb-4">Edit Syllabus</h3>
+                                <p class="text-gray-600 mb-4">Modify existing course syllabi</p>
+                                <span class="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg">Edit Syllabus</span>
+                            </div>
+                        </button>
+                        <button onclick="showSyllabusForm('view')" class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition duration-200">
+                            <div class="text-center">
+                                <h3 class="text-xl font-bold text-gray-800 mb-4">View All Syllabi</h3>
+                                <p class="text-gray-600 mb-4">Browse all course syllabi</p>
+                                <span class="inline-block bg-purple-600 text-white px-4 py-2 rounded-lg">View All</span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Syllabus Management Form (Hidden by default) -->
+                <div id="syllabusForm" class="max-w-4xl mx-auto hidden">
+                    <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-2xl font-bold text-gray-800" id="formTitle">Manage Syllabus</h2>
+                            <button onclick="showInitialOptions()" class="text-gray-600 hover:text-gray-800">
+                                ← Back to Options
+                            </button>
+                        </div>
+                        
+                        <!-- Branch and Semester Selection -->
+                        <div class="grid md:grid-cols-2 gap-4 mb-6">
+                            <div>
+                                <label class="block text-gray-700 mb-2">Select Branch <span class="text-red-500">*</span></label>
+                                <select id="branchSelect" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-green-500" required>
+                                    <option value="">Select Branch</option>
+                                    <option value="cs">Computer Science</option>
+                                    <option value="it">Information Technology</option>
+                                    <option value="ec">Electronics</option>
+                                    <option value="me">Mechanical</option>
+                                    <option value="ce">Civil</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 mb-2">Select Semester <span class="text-red-500">*</span></label>
+                                <select id="semesterSelect" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-green-500" required>
+                                    <option value="">Select Semester</option>
+                                    <option value="1">Semester 1</option>
+                                    <option value="2">Semester 2</option>
+                                    <option value="3">Semester 3</option>
+                                    <option value="4">Semester 4</option>
+                                    <option value="5">Semester 5</option>
+                                    <option value="6">Semester 6</option>
+                                    <option value="7">Semester 7</option>
+                                    <option value="8">Semester 8</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Add/Edit Form (Hidden by default) -->
+                        <div id="syllabusEditForm" class="hidden">
+                            <form id="syllabusForm" onsubmit="return false;">
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-gray-700 mb-2">
+                                            Course Code <span class="text-red-600 font-bold text-xl">*</span>
+                                        </label>
+                                        <input type="text" id="courseCode" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-green-500" placeholder="e.g., CS301">
+                                        <div id="courseCodeError" class="text-red-500 text-sm mt-1"></div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-gray-700 mb-2">
+                                            Course Name <span class="text-red-600 font-bold text-xl">*</span>
+                                        </label>
+                                        <input type="text" id="courseName" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-green-500" placeholder="e.g., Data Structures">
+                                        <div id="courseNameError" class="text-red-500 text-sm mt-1"></div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-gray-700 mb-2">
+                                            Credits <span class="text-red-600 font-bold text-xl">*</span>
+                                        </label>
+                                        <input type="number" id="credits" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-green-500" min="1" max="6" placeholder="e.g., 4">
+                                        <div id="creditsError" class="text-red-500 text-sm mt-1"></div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-gray-700 mb-2">
+                                            Course Topics <span class="text-red-600 font-bold text-xl">*</span>
+                                        </label>
+                                        <textarea id="topics" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-green-500" rows="4" placeholder="Enter topics (one per line)"></textarea>
+                                        <div id="topicsError" class="text-red-500 text-sm mt-1"></div>
+                                    </div>
+                                    <button type="button" onclick="validateAndSaveSyllabus()" class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition duration-200">
+                                        Save Syllabus
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- View Form (Hidden by default) -->
+                        <div id="syllabusViewForm" class="hidden">
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full bg-white">
+                                    <thead>
+                                        <tr class="bg-gray-100">
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Course Code</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Course Name</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Credits</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="syllabusTableBody" class="divide-y divide-gray-200">
+                                        <!-- Table content will be dynamically populated -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="bg-gray-800 text-white py-8 mt-8">
+            <div class="container mx-auto px-4">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Reach Us -->
+                    <div>
+                        <h3 class="text-xl font-bold mb-4">REACH US</h3>
+                        <p class="mb-2">BMS Institute of Technology & Management,</p>
+                        <p class="mb-2">Doddaballapur Main Road,</p>
+                        <p class="mb-2">Avalahalli, Yelahanka,</p>
+                        <p class="mb-4">Bengaluru - 560119.</p>
+                    </div>
+                    
+                    <!-- Contact Us -->
+                    <div>
+                        <h3 class="text-xl font-bold mb-4">CONTACT US</h3>
+                        <p class="font-semibold mb-2">Admissions:</p>
+                        <p class="mb-1">BMS Trust Office: 080-26611636</p>
+                        <p class="mb-1">Admissions Enquiry: 080-68730429 / 080-68730456</p>
+                        <p class="mb-1">BMSIT Office: 080-68730444</p>
+                        <p class="mb-1">Fee: 080-68730428</p>
+                        <p class="mb-1">Hostel: 9739947120 / 9741590336 / 8792347320</p>
+                        <p class="mb-1">Email: principal@bmsit.in</p>
+                        <p class="mb-1">Women Helpline Number 24x7: 080-68730452</p>
+                    </div>
+                </div>
+                <div class="text-center mt-8 pt-4 border-t border-gray-700">
+                    <p>&copy; 2024 Syllabus Management System. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Dialog Boxes -->
+    <div id="successDialog" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-8 max-w-sm w-full mx-4 transform transition-all">
+            <div class="text-center">
+                <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
+                    <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900 mb-2" id="successTitle">Success!</h3>
+                <p class="text-sm text-gray-500 mb-4" id="successMessage">Operation completed successfully.</p>
+                <button onclick="closeDialog('successDialog')" class="w-full bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-200">
+                    OK
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="deleteDialog" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-8 max-w-sm w-full mx-4 transform transition-all">
+            <div class="text-center">
+                <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
+                    <svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">Confirm Delete</h3>
+                <p class="text-sm text-gray-500 mb-4" id="deleteMessage">Are you sure you want to delete this syllabus?</p>
+                <div class="flex space-x-4">
+                    <button onclick="closeDialog('deleteDialog')" class="flex-1 bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 transition duration-200">
+                        Cancel
+                    </button>
+                    <button onclick="confirmDelete()" class="flex-1 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-200">
+                        Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentAction = '';
+        let currentCourseId = null;
+
+        function showSyllabusForm(action) {
+            currentAction = action;
+            document.getElementById('initialOptions').classList.add('hidden');
+            document.getElementById('syllabusForm').classList.remove('hidden');
+            
+            if (action === 'add') {
+                document.getElementById('formTitle').textContent = 'Add New Syllabus';
+                document.getElementById('syllabusEditForm').classList.remove('hidden');
+                document.getElementById('syllabusViewForm').classList.add('hidden');
+                clearForm();
+            } else if (action === 'edit') {
+                document.getElementById('formTitle').textContent = 'Edit Syllabus';
+                document.getElementById('syllabusEditForm').classList.remove('hidden');
+                document.getElementById('syllabusViewForm').classList.add('hidden');
+                loadCourses();
+            } else if (action === 'view') {
+                document.getElementById('formTitle').textContent = 'View All Syllabi';
+                document.getElementById('syllabusEditForm').classList.add('hidden');
+                document.getElementById('syllabusViewForm').classList.remove('hidden');
+                loadCourses();
+            }
+        }
+
+        function showInitialOptions() {
+            document.getElementById('syllabusForm').classList.add('hidden');
+            document.getElementById('initialOptions').classList.remove('hidden');
+        }
+
+        function clearForm() {
+            document.getElementById('courseCode').value = '';
+            document.getElementById('courseName').value = '';
+            document.getElementById('credits').value = '';
+            document.getElementById('topics').value = '';
+            document.getElementById('branchSelect').value = '';
+            document.getElementById('semesterSelect').value = '';
+            currentCourseId = null;
+            
+            // Remove all error states and messages
+            document.querySelectorAll('.border-red-500').forEach(el => el.classList.remove('border-red-500'));
+            document.querySelectorAll('[id$="Error"]').forEach(el => el.textContent = '');
+        }
+
+        function validateAndSaveSyllabus() {
+            // Clear previous errors
+            document.querySelectorAll('[id$="Error"]').forEach(el => el.textContent = '');
+            document.querySelectorAll('.border-red-500').forEach(el => el.classList.remove('border-red-500'));
+
+            // Get values
+            const courseCode = document.getElementById('courseCode').value.trim();
+            const courseName = document.getElementById('courseName').value.trim();
+            const credits = document.getElementById('credits').value.trim();
+            const topics = document.getElementById('topics').value.trim();
+            const branch = document.getElementById('branchSelect').value;
+            const semester = document.getElementById('semesterSelect').value;
+
+            let isValid = true;
+
+            // Validate Course Code
+            if (!courseCode) {
+                document.getElementById('courseCode').classList.add('border-red-500');
+                document.getElementById('courseCodeError').textContent = 'Course Code is required';
+                isValid = false;
+            }
+
+            // Validate Course Name
+            if (!courseName) {
+                document.getElementById('courseName').classList.add('border-red-500');
+                document.getElementById('courseNameError').textContent = 'Course Name is required';
+                isValid = false;
+            }
+
+            // Validate Credits
+            if (!credits) {
+                document.getElementById('credits').classList.add('border-red-500');
+                document.getElementById('creditsError').textContent = 'Credits is required';
+                isValid = false;
+            } else {
+                const creditsNum = parseInt(credits);
+                if (isNaN(creditsNum) || creditsNum < 1 || creditsNum > 6) {
+                    document.getElementById('credits').classList.add('border-red-500');
+                    document.getElementById('creditsError').textContent = 'Credits must be between 1 and 6';
+                    isValid = false;
+                }
+            }
+
+            // Validate Topics
+            if (!topics) {
+                document.getElementById('topics').classList.add('border-red-500');
+                document.getElementById('topicsError').textContent = 'Course Topics is required';
+                isValid = false;
+            }
+
+            // Validate Branch
+            if (!branch) {
+                document.getElementById('branchSelect').classList.add('border-red-500');
+                showDialog('Please select a Branch');
+                isValid = false;
+            }
+
+            // Validate Semester
+            if (!semester) {
+                document.getElementById('semesterSelect').classList.add('border-red-500');
+                showDialog('Please select a Semester');
+                isValid = false;
+            }
+
+            // If valid, save the syllabus
+            if (isValid) {
+                saveSyllabus();
+            }
+        }
+
+        async function saveSyllabus() {
+            try {
+                // Show loading state
+                const saveButton = document.querySelector('button[type="button"]');
+                saveButton.innerHTML = 'Saving...';
+                saveButton.disabled = true;
+
+                const courseData = {
+                    code: document.getElementById('courseCode').value.trim(),
+                    name: document.getElementById('courseName').value.trim(),
+                    credits: parseInt(document.getElementById('credits').value),
+                    department_id: getDepartmentId(document.getElementById('branchSelect').value),
+                    semester: parseInt(document.getElementById('semesterSelect').value),
+                    created_by: 1,
+                    topics: document.getElementById('topics').value.split('\n').filter(topic => topic.trim() !== '')
+                };
+
+                const url = currentAction === 'edit' && currentCourseId 
+                    ? `http://localhost/syllabus_management/backend/api/courses.php?id=${currentCourseId}`
+                    : 'http://localhost/syllabus_management/backend/api/courses.php';
+                
+                const response = await fetch(url, {
+                    method: currentAction === 'edit' ? 'PUT' : 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(courseData)
+                });
+
+                const result = await response.json();
+                
+                if (response.ok) {
+                    showDialog('Syllabus saved successfully!');
+                    clearForm();
+                    loadCourses();
+                    showInitialOptions();
+                } else {
+                    showDialog('Error: ' + (result.message || 'Failed to save syllabus. Please try again.'));
+                }
+            } catch (error) {
+                console.error('Error saving syllabus:', error);
+                showDialog('Error: Could not connect to server. Please check if the server is running.');
+            } finally {
+                // Reset button state
+                const saveButton = document.querySelector('button[type="button"]');
+                saveButton.innerHTML = 'Save Syllabus';
+                saveButton.disabled = false;
+            }
+        }
+
+        function showDialog(message) {
+            const dialog = document.getElementById('successDialog');
+            const messageElement = document.getElementById('successMessage');
+            const titleElement = document.getElementById('successTitle');
+            const iconElement = dialog.querySelector('.mx-auto');
+            
+            // Set title and icon based on message content
+            if (message.startsWith('Error:')) {
+                titleElement.textContent = 'Error';
+                titleElement.className = 'text-lg font-medium text-red-600 mb-2';
+                iconElement.className = 'mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4';
+                iconElement.innerHTML = '<svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>';
+            } else {
+                titleElement.textContent = 'Success';
+                titleElement.className = 'text-lg font-medium text-green-600 mb-2';
+                iconElement.className = 'mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4';
+                iconElement.innerHTML = '<svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>';
+            }
+            
+            messageElement.textContent = message;
+            dialog.classList.remove('hidden');
+            dialog.classList.add('flex');
+        }
+
+        function closeDialog(dialogId) {
+            const dialog = document.getElementById(dialogId);
+            dialog.classList.add('hidden');
+            dialog.classList.remove('flex');
+        }
+
+        // Add input event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Text inputs
+            ['courseCode', 'courseName', 'credits', 'topics'].forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (field) {
+                    field.addEventListener('input', function() {
+                        this.classList.remove('border-red-500');
+                        document.getElementById(fieldId + 'Error').textContent = '';
+                    });
+                }
+            });
+
+            // Select inputs
+            ['branchSelect', 'semesterSelect'].forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (field) {
+                    field.addEventListener('change', function() {
+                        this.classList.remove('border-red-500');
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

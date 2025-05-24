@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - Syllabus Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: url('./images/WhatsApp Image 2025-05-22 at 01.34.32_925b9a83.jpg') no-repeat center center fixed;
+            background-size: cover;
+            background-color: #f3f4f6; /* Fallback color */
+        }
+        .content-wrapper {
+            background-color: rgba(255, 255, 255, 0.9);
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+        }
+        .college-banner {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('./images/WhatsApp Image 2025-05-22 at 01.34.32_925b9a83.jpg') no-repeat center center;
+            background-size: cover;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+    <div class="content-wrapper">
+        <!-- Navigation -->
+        <nav class="text-white p-4 fixed top-0 left-0 right-0 z-50" style="background-color: #900f0f;">
+            <div class="container mx-auto flex justify-between items-center">
+                <h1 class="text-2xl font-bold">Syllabus Management System</h1>
+                <div class="space-x-4">
+                    <a href="#" class="hover:text-red-200">Profile</a>
+                    <a href="http://localhost:8000/index.html" class="hover:text-red-200">Logout</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Add padding to account for fixed navigation -->
+        <div class="pt-16">
+            <!-- College Banner -->
+            <div class="college-banner">
+                <div class="container mx-auto text-center">
+                    <div class="flex items-center justify-center gap-6 mb-4">
+                        <img src="./images/BMS_Institute_of_Technology_and_Management_logo-removebg-preview.png" alt="BMSIT Logo" class="h-32 w-auto">
+                        <h1 class="text-5xl font-bold text-white"><span style="color: #900f0f;">BMS</span> Institute of Technology and Management</h1>
+                    </div>
+                    <p class="text-2xl text-white mb-2">Yelahanka, Bangalore</p>
+                    <p class="text-xl text-white">Affiliated to Visvesvaraya Technological University</p>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="container mx-auto px-4 py-8">
+                <!-- Branch and Semester Selection -->
+                <div class="max-w-4xl mx-auto bg-white bg-opacity-95 rounded-lg shadow-lg p-6 mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6">Select Branch and Semester</h2>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-gray-700 mb-2">Branch</label>
+                            <select id="branchSelect" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-green-500">
+                                <option value="">Select Branch</option>
+                                <option value="cs">Computer Science</option>
+                                <option value="it">Information Technology</option>
+                                <option value="ec">Electronics</option>
+                                <option value="me">Mechanical</option>
+                                <option value="ce">Civil</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2">Semester</label>
+                            <select id="semesterSelect" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-green-500">
+                                <option value="">Select Semester</option>
+                                <option value="1">Semester 1</option>
+                                <option value="2">Semester 2</option>
+                                <option value="3">Semester 3</option>
+                                <option value="4">Semester 4</option>
+                                <option value="5">Semester 5</option>
+                                <option value="6">Semester 6</option>
+                                <option value="7">Semester 7</option>
+                                <option value="8">Semester 8</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Available Courses -->
+                <div class="max-w-4xl mx-auto bg-white bg-opacity-95 rounded-lg shadow-lg p-6 mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6">Available Courses</h2>
+                    <div class="grid md:grid-cols-2 gap-6" id="coursesList">
+                        <!-- Course cards will be dynamically added here -->
+                    </div>
+                </div>
+
+                <!-- Recommended NPTEL Courses -->
+                <div class="max-w-4xl mx-auto bg-white bg-opacity-95 rounded-lg shadow-lg p-6">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6">Recommended NPTEL Courses</h2>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="bg-white rounded-lg shadow-lg p-6">
+                            <h3 class="text-xl font-bold text-gray-800 mb-2">Machine Learning</h3>
+                            <p class="text-gray-600 mb-4">Learn the fundamentals of machine learning and its applications.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-500">IIT Madras</span>
+                                <a href="#" class="text-green-600 hover:text-green-800">Apply Now</a>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-lg p-6">
+                            <h3 class="text-xl font-bold text-gray-800 mb-2">Deep Learning</h3>
+                            <p class="text-gray-600 mb-4">Explore neural networks and deep learning techniques.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-500">IIT Kharagpur</span>
+                                <a href="#" class="text-green-600 hover:text-green-800">Apply Now</a>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-lg p-6">
+                            <h3 class="text-xl font-bold text-gray-800 mb-2">Cloud Computing</h3>
+                            <p class="text-gray-600 mb-4">Understand cloud services and deployment models.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-500">IIT Bombay</span>
+                                <a href="#" class="text-green-600 hover:text-green-800">Apply Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <footer class="bg-gray-800 text-white py-8 mt-8">
+                <div class="container mx-auto px-4">
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <!-- Reach Us -->
+                        <div>
+                            <h3 class="text-xl font-bold mb-4">REACH US</h3>
+                            <p class="mb-2">BMS Institute of Technology & Management,</p>
+                            <p class="mb-2">Doddaballapur Main Road,</p>
+                            <p class="mb-2">Avalahalli, Yelahanka,</p>
+                            <p class="mb-4">Bengaluru - 560119.</p>
+                        </div>
+                        
+                        <!-- Contact Us -->
+                        <div>
+                            <h3 class="text-xl font-bold mb-4">CONTACT US</h3>
+                            <p class="font-semibold mb-2">Admissions:</p>
+                            <p class="mb-1">BMS Trust Office: 080-26611636</p>
+                            <p class="mb-1">Admissions Enquiry: 080-68730429 / 080-68730456</p>
+                            <p class="mb-1">BMSIT Office: 080-68730444</p>
+                            <p class="mb-1">Fee: 080-68730428</p>
+                            <p class="mb-1">Hostel: 9739947120 / 9741590336 / 8792347320</p>
+                            <p class="mb-1">Email: principal@bmsit.in</p>
+                            <p class="mb-1">Women Helpline Number 24x7: 080-68730452</p>
+                        </div>
+                    </div>
+                    <div class="text-center mt-8 pt-4 border-t border-gray-700">
+                        <p>&copy; 2024 Syllabus Management System. All rights reserved.</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        async function fetchCourses(branch, semester) {
+            try {
+                const response = await fetch(`http://localhost/syllabus_management/backend/api/courses.php?department=${branch}&semester=${semester}`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch courses');
+                }
+                const courses = await response.json();
+                return courses;
+            } catch (error) {
+                console.error('Error fetching courses:', error);
+                return [];
+            }
+        }
+
+        async function updateSyllabus() {
+            const branch = document.getElementById('branchSelect').value;
+            const semester = document.getElementById('semesterSelect').value;
+            const coursesList = document.getElementById('coursesList');
+
+            if (branch && semester) {
+                coursesList.innerHTML = '<p class="text-gray-600">Loading courses...</p>';
+                
+                try {
+                    const courses = await fetchCourses(branch, semester);
+                    
+                    if (courses.length > 0) {
+                        coursesList.innerHTML = courses.map(course => `
+                            <div class="bg-white rounded-lg shadow-lg p-6">
+                                <h3 class="text-xl font-bold text-gray-800 mb-2">${course.name}</h3>
+                                <p class="text-gray-600 mb-2">Course Code: ${course.code}</p>
+                                <p class="text-gray-600 mb-4">Credits: ${course.credits}</p>
+                                <div class="mt-4">
+                                    <h4 class="font-semibold text-gray-700 mb-2">Topics:</h4>
+                                    <ul class="list-disc list-inside text-gray-600">
+                                        ${course.topics && course.topics.length > 0 
+                                            ? course.topics.map(topic => `<li>${topic.topic}</li>`).join('') 
+                                            : '<li>No topics available</li>'}
+                                    </ul>
+                                </div>
+                            </div>
+                        `).join('');
+                    } else {
+                        coursesList.innerHTML = '<p class="text-gray-600">No syllabus available for the selected branch and semester.</p>';
+                    }
+                } catch (error) {
+                    coursesList.innerHTML = '<p class="text-red-600">Error loading courses. Please try again.</p>';
+                }
+            } else {
+                coursesList.innerHTML = '<p class="text-gray-600">Please select both branch and semester to view the syllabus.</p>';
+            }
+        }
+
+        // Add event listeners to branch and semester selects
+        document.getElementById('branchSelect').addEventListener('change', updateSyllabus);
+        document.getElementById('semesterSelect').addEventListener('change', updateSyllabus);
+    </script>
+</body>
+</html> 
