@@ -95,11 +95,7 @@ A web-based system for managing course syllabi, allowing staff to create and edi
    - Check if database tables are properly imported
    - Ensure backend API is accessible
 
-## Support
 
-For any issues or questions, please contact:
-- Email: principal@bmsit.in
-- Phone: 080-68730444
 
 ## Quick Start Script
 
